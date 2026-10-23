@@ -108,14 +108,14 @@ curl http://localhost:8080/health
 
 No token is required for the health endpoint.
 
-## 授权参数说明 (Authentication)
+## Authentication parameters (Authentication)
 
 Every request to `/mcp` must include the following HTTP headers:
 
-| Header | 类型 | 是否必填 | 默认值 | 枚举值 | 字段描述 | Example |
+| Header | Type | Required | Default | Allowed values | Description | Example |
 |---|---|---|---|---|---|---|
-| `X-ConnectWise-Asio-Token` | string | 必填 | 无 | 无(自由文本) | OAuth2 bearer access token,由调用方(Agent Platform / 上游网关)通过 `POST /v1/token`(client_credentials grant,需 client_id + client_secret + scope)预先换取并负责刷新。本服务从不接触 client_id/client_secret,只转发已获取的 token。 | `X-ConnectWise-Asio-Token: <access_token>` |
-| `X-ConnectWise-Asio-Base-Url` | string | 可选 | `CONNECTWISE_ASIO_BASE_URL` 环境变量(默认 `https://openapi.service.itsupport247.net`) | `https://openapi.service.itsupport247.net`(NA)、`https://openapi.service.euplatform.connectwise.com`(EU)、`https://openapi.service.auplatform.connectwise.com`(AU) | ConnectWise Asio 按账号所属地区分 3 个独立服务器(Client ID 前缀 0e30=NA/0e31=EU/0e32=AU 可判断地区);不带该 header 时用环境变量默认值,网关同时服务多地区租户时按请求覆盖。 | `X-ConnectWise-Asio-Base-Url: https://openapi.service.euplatform.connectwise.com` |
+| `X-ConnectWise-Asio-Token` | string | Yes | None | None (free text) | OAuth2 bearer access token, obtained in advance and refreshed by the caller (Agent Platform / upstream gateway) via `POST /v1/token` (client_credentials grant, requires client_id + client_secret + scope). This service never touches client_id/client_secret and only forwards the already obtained token. | `X-ConnectWise-Asio-Token: <access_token>` |
+| `X-ConnectWise-Asio-Base-Url` | string | Optional | `CONNECTWISE_ASIO_BASE_URL` environment variable (default `https://openapi.service.itsupport247.net`) | `https://openapi.service.itsupport247.net` (NA), `https://openapi.service.euplatform.connectwise.com` (EU), `https://openapi.service.auplatform.connectwise.com` (AU) | ConnectWise Asio has 3 independent servers by the region the account belongs to (the Client ID prefix 0e30=NA/0e31=EU/0e32=AU identifies the region); without this header the environment variable default is used, and a gateway serving tenants in multiple regions overrides it per request. | `X-ConnectWise-Asio-Base-Url: https://openapi.service.euplatform.connectwise.com` |
 
 Missing `X-ConnectWise-Asio-Token` returns `401 Unauthorized`.
 
@@ -181,7 +181,7 @@ Connect your MCP client with:
 | `connectwise_asio_get_automation_tasks` | Get all automation tasks for the partner. | none |
 
 
-## 测试示例 (Test Example)
+## Test Example
 
 Get a company list, then its sites:
 
